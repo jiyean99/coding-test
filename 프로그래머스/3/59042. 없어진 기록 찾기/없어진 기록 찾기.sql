@@ -1,9 +1,21 @@
--- 코드를 입력하세요
-# 천재지변으로 인해 일부 데이터가 유실되었습니다. 입양을 간 기록은 있는데, 보호소에 들어온 기록이 없는 동물의 ID와 이름을 ID 순으로 조회하는 SQL문을 작성해주세요.
+# SELECT o.ANIMAL_ID, o.NAME 
+# from ANIMAL_OUTS o
+# left join ANIMAL_INS i
+# on i.ANIMAL_ID=o.ANIMAL_ID
+# where i.ANIMAL_ID is null 
+# order by o.ANIMAL_ID;
 
-SELECT o.ANIMAL_ID, o.NAME 
-from ANIMAL_OUTS o
-left join ANIMAL_INS i
-on i.ANIMAL_ID=o.ANIMAL_ID
-where i.ANIMAL_ID is null 
-order by o.ANIMAL_ID;
+# 서브쿼리 풀이법(1)
+# select o.id, o.name
+# from out o
+# where not in (
+#     select 
+#     from o
+#     inner join i
+#     on o.id=i.id
+# );
+
+# 서브쿼리 풀이법(2)
+select ANIMAL_OUTS.ANIMAL_ID, ANIMAL_OUTS.NAME
+from ANIMAL_OUTS
+where ANIMAL_OUTS.ANIMAL_ID not in(select ANIMAL_ID from ANIMAL_INS);
