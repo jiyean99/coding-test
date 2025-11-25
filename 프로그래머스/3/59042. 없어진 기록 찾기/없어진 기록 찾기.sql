@@ -6,16 +6,19 @@
 # order by o.ANIMAL_ID;
 
 # 서브쿼리 풀이법(1)
-# select o.id, o.name
-# from out o
-# where not in (
-#     select 
-#     from o
-#     inner join i
-#     on o.id=i.id
-# );
+SELECT ANIMAL_OUTS.ANIMAL_ID, ANIMAL_OUTS.NAME
+FROM ANIMAL_OUTS
+WHERE ANIMAL_OUTS.ANIMAL_ID NOT IN (
+    SELECT ANIMAL_INS.ANIMAL_ID
+    FROM ANIMAL_OUTS
+    INNER JOIN ANIMAL_INS
+    ON ANIMAL_OUTS.ANIMAL_ID = ANIMAL_INS.ANIMAL_ID
+);
+
+
+
 
 # 서브쿼리 풀이법(2)
-select ANIMAL_OUTS.ANIMAL_ID, ANIMAL_OUTS.NAME
-from ANIMAL_OUTS
-where ANIMAL_OUTS.ANIMAL_ID not in(select ANIMAL_ID from ANIMAL_INS);
+# select ANIMAL_OUTS.ANIMAL_ID, ANIMAL_OUTS.NAME
+# from ANIMAL_OUTS
+# where ANIMAL_OUTS.ANIMAL_ID not in(select ANIMAL_ID from ANIMAL_INS);
