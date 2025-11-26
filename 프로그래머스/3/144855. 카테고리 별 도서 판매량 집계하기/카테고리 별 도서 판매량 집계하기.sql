@@ -2,8 +2,16 @@
 
 select b.CATEGORY, sum(b_s.SALES) as TOTAL_SALES
 from BOOK_SALES as b_s
-inner join BOOK as b
+left join BOOK as b
 on b_s.BOOK_ID = b.BOOK_ID
 where date_format(b_s.SALES_DATE, '%Y-%m') = '2022-01'
 group by b.CATEGORY
 order by b.CATEGORY;
+
+# SELECT B.CATEGORY, SUM(BS.SALES) AS TOTAL_SALES
+# FROM BOOK_SALES BS
+# JOIN BOOK B 
+# ON BS.BOOK_ID=B.BOOK_ID
+# WHERE BS.SALES_DATE LIKE '2022-01'
+# GROUP BY B.CATEGORY
+# ORDER BY B.CATEGORY;
