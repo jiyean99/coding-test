@@ -9,12 +9,11 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int a = Integer.parseInt(st.nextToken());
-        int b = Integer.parseInt(st.nextToken());
+        long a = Long.parseLong(st.nextToken());
+        long b = Long.parseLong(st.nextToken());
 
-        int output = (a + b) * (a - b);
+        long output = (a + b) * (a - b);
 
         System.out.println(output);
-
     }
 }
