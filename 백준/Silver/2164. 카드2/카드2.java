@@ -1,24 +1,25 @@
-import java.io.*;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 
+// 카드2 큐로 풀이
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Deque<Integer> dq = new ArrayDeque<>();
         int n = Integer.parseInt(br.readLine());
-        for (int i = 0; i < n; i++) {
-            dq.add(i+1);
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            queue.add(i);
         }
 
-        while (dq.size() > 1){
-            dq.remove();
-            int num = dq.removeFirst();
-            dq.add(num);
+        while (queue.size() > 1) {
+            queue.poll();
+            queue.add(queue.poll());
         }
 
-        System.out.println(dq.getFirst());
+        System.out.println(queue.peek());
     }
 }
