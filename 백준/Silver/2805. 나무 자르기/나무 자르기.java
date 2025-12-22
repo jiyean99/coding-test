@@ -53,6 +53,6 @@ public class Main {
                 endTree = midHeight - 1; // 낮게 잘라야 함
             }
         }
-        System.out.println(answer);
+        System.out.println(endTree);
     }
 }
