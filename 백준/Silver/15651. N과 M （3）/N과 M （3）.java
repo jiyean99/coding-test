@@ -3,37 +3,37 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// N과 M (3) - 시간초과 개선
 public class Main {
-    static int N, M;
-    static int[] numbers;
-    static StringBuilder sb = new StringBuilder();
-    
+    static int[] selected;
+    static int n, m;
+    static StringBuilder sb = new StringBuilder();  // 단일 StringBuilder
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        numbers = new int[M];
-        
-        backtracking(0);
-        System.out.println(sb);
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        selected = new int[m];
+        backtrack(0);
+        System.out.println(sb);  // 한 번만 출력
     }
-    
-    static void backtracking(int depth) {
-        // 종료조건: M개 선택 완료
-        if (depth == M) {
-            for (int num : numbers) {
-                sb.append(num).append(" ");
+
+    public static void backtrack(int depth) {
+        if (depth == m) {
+            // StringBuilder에 추가만 (println 제거)
+            for (int i = 0; i < m; i++) {
+                sb.append(selected[i]).append(" ");
             }
             sb.append("\n");
             return;
         }
-        
-        // 1~N 중 선택
-        for (int i = 1; i <= N; i++) {
-            numbers[depth] = i;
-            backtracking(depth + 1);
+
+        for (int i = 1; i <= n; i++) {
+            selected[depth] = i;
+            backtrack(depth + 1);
         }
     }
 }
