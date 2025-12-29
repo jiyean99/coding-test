@@ -1,72 +1,86 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
-// DFS와 BFS
+// DFS와 BFS : 백준
+// https://www.acmicpc.net/problem/1260
 public class Main {
+    static int n;
+    static int m;
+    static int v;
+
+    static List<List<Integer>> adjList;
+
+    static boolean[] visited;
+
+
+    static StringBuilder dfsSb = new StringBuilder();
+    static StringBuilder bfsSb = new StringBuilder();
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer inputInfo = new StringTokenizer(br.readLine());
-        int node, line, nowNodeIdx;
-        node = Integer.parseInt(inputInfo.nextToken());
-        line = Integer.parseInt(inputInfo.nextToken());
-        nowNodeIdx = Integer.parseInt(inputInfo.nextToken());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        List<List<Integer>> list = new ArrayList<>();
-        for (int i = 0; i < node + 1; i++) {  // 1~node 인덱스용
-            list.add(new ArrayList<>());
+        // 정점 개수
+        n = Integer.parseInt(st.nextToken());
+        // 간선 개수
+        m = Integer.parseInt(st.nextToken());
+        // 시작정점 번호
+        v = Integer.parseInt(st.nextToken());
+
+        // 1. 인접리스트 생성(0번노드는 없지만 그냥 나중에 get할 때 편의성을 위해 0부터 노드갯수+1만큼 깡통으로 만들어준다)
+        adjList = new ArrayList<>();
+        for (int i = 0; i < n + 1; i++) {
+            adjList.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < line; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            list.get(a).add(b);  // 양방향
-            list.get(b).add(a);
+        // 2. 각 노드별 인접노드들을 인접리스트에 담아줌
+        for (int i = 0; i < m; i++) {
+            StringTokenizer input = new StringTokenizer(br.readLine());
+            int nodeA = Integer.parseInt(input.nextToken());
+            int nodeB = Integer.parseInt(input.nextToken());
+            adjList.get(nodeA).add(nodeB);
+            adjList.get(nodeB).add(nodeA);
         }
 
-        for (int i = 1; i <= node; i++) {
-            Collections.sort(list.get(i));
+        // 3. 인접리스의 내부 리스트 오름차순 정렬
+        for (List<Integer> list : adjList) {
+            list.sort(Comparator.naturalOrder());
         }
 
-        boolean[] visited = new boolean[node + 1];
+        // 4. 노드별 방문여부 확인 배열 생성
+        visited = new boolean[n + 1];
 
-        dfs(nowNodeIdx, list, visited);
-        System.out.println();
-        
-        Arrays.fill(visited, false);  // 재사용 시 초기화
-        visited[nowNodeIdx] = true;   // 시작점 미리 체크
-        bfs(nowNodeIdx, list, visited);
+        dfs(v);
+        System.out.println(dfsSb);
 
+        // bfs를 위한 방문여부 확인 배열 초기화
+        visited = new boolean[n + 1];
+        bfs(v);
+        System.out.println(bfsSb);
     }
 
-    public static void dfs(int nowNodeIdx, List<List<Integer>> list, boolean[] visited) {
-        visited[nowNodeIdx] = true;
-        System.out.print(nowNodeIdx + " ");
 
-        for (int i = 0; i < list.get(nowNodeIdx).size(); i++) {
-            int nextNodeIdx = list.get(nowNodeIdx).get(i); // 인접 노드 번호
-            if (!visited[nextNodeIdx]) {
-                dfs(nextNodeIdx, list, visited);
+    static void dfs(int start) {
+        dfsSb.append(start).append(" ");
+        visited[start] = true;
+        for (int target : adjList.get(start)) {
+            if (!visited[target]) {
+                dfs(target);
             }
         }
     }
 
-    public static void bfs(int nowNodeIdx, List<List<Integer>> list, boolean[] visited) {
-        StringBuilder sb = new StringBuilder();
+    static void bfs(int start) {
         Queue<Integer> queue = new LinkedList<>();
-        queue.add(nowNodeIdx);
-        visited[nowNodeIdx] = true;
+        queue.add(start);
+        visited[start] = true;
         while (!queue.isEmpty()){
-            int current = queue.poll();
-            System.out.print(current + " ");
-
-            for (int i = 0; i < list.get(current).size(); i++) {
-                int next = list.get(current).get(i);
-                if (!visited[next]) {
-                    visited[next] = true;
-                    queue.add(next);
+            int target = queue.poll();
+            bfsSb.append(target).append(" ");
+            for(int a : adjList.get(target)){
+                if(!visited[a]){
+                    visited[a] = true;
+                    queue.add(a);
                 }
             }
         }
