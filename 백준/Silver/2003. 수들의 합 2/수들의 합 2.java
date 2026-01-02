@@ -22,21 +22,27 @@ public class Main {
         int endIdx = 0;
         int sum = arr[startIdx];
 
-         while (endIdx < arr.length) {
+        while (startIdx <= endIdx && endIdx < arr.length) {
             if (sum == target) {
                 count++;
-                sum -= arr[startIdx];
-                startIdx++;
+                endIdx++;
+                if (arr.length == endIdx) break;
+                sum += arr[endIdx];
+            } else if (sum < target) {
+                endIdx++;
+                if (arr.length == endIdx) break;
+                sum += arr[endIdx];
             } else if (sum > target) {
                 sum -= arr[startIdx];
                 startIdx++;
-            } else if (sum < target) {
-                endIdx++;
-                if (endIdx == arr.length) break;
-                sum += arr[endIdx];
+                if (startIdx > endIdx) {
+                    endIdx++;
+                    if (arr.length == endIdx) break;
+                    sum += arr[endIdx];
+                }
             }
         }
-
+        
         System.out.println(count);
     }
 }
