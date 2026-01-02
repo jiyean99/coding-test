@@ -31,22 +31,9 @@ public class Main {
         int answer = 0;
         while (startIdx <= endIdx) {
             int mid = (startIdx + endIdx) / 2;
-//            mid값은 상한금액
-//            상한금액으로 총예산값(매번달라짐)을 구한뒤, 총예산값과 예산상한과 비교
-//            == 면, answer = mid break;
-//            총예산 < 예산상한
-//            총예산 > 예산상한
-            // mid값이 정해질 때 마다, 예산총액과 비교해줘야함
-            // 금액은 for문을 통해 구해야하고, 이 금액을 예산총액과 비교해야함
-            // mid값은 상한금액, 상한금액으로 총예산값을 구한뒤 총예산값과 예산상한을 비교한다
-
             int total = 0;
             for (int i = 0; i < arr.length; i++) {
-                if (mid > arr[i]) {
-                    total += arr[i];
-                } else {
-                    total += mid;
-                }
+                total += (Math.min(mid, arr[i]));
             }
 
             if (total > limit) {
