@@ -1,15 +1,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     static int[][] map;
     static int n;
-    static List<String> mapList = new ArrayList<>();
+
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,34 +27,43 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (map[i][j] == 1) {
-                    sizes.add(dfs(i,j));
+                    sizes.add(bfs(i, j));
                 }
             }
         }
+
         Collections.sort(sizes);
         System.out.println(sizes.size());
-        for(int a : sizes){
+        for (int a : sizes) {
             System.out.println(a);
         }
     }
 
-    static int dfs(int x, int y) {
+    static int bfs(int x, int y) {
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{x, y});
         map[x][y] = 0; // 방문처리
         int count = 1; // 현재 집
 
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
+        while (!q.isEmpty()) {
+            int[] current = q.poll();
+            int xTemp = current[0];
+            int yTemp = current[1];
 
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+            for (int i = 0; i < 4; i++) {
+                int nx = xTemp + dx[i];
+                int ny = yTemp + dy[i];
 
-            if (nx >= 0 && nx < n && ny >= 0 && ny < n) {
-                if (map[nx][ny] == 1) {
-                    count += dfs(nx, ny);
+                if (nx >= 0 && nx < n && ny >= 0 && ny < n) {
+                    if (map[nx][ny] == 1) {
+                        map[nx][ny] = 0; // 방문처리
+                        q.offer(new int[]{nx, ny});
+                        count++;
+                    }
                 }
             }
         }
+
         return count;
     }
 }
